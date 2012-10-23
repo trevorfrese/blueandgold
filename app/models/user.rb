@@ -9,8 +9,8 @@ valid_email_regex = /\b[A-Z0-9._%a-z\-]+@umail\.ucsb\.edu/
 
 validates_presence_of :name, :password
 validates_uniqueness_of :name
-validates :password, :presence => { :on => :create }
-
+validates :password, :presence => { :on => :create }, length: {minimum: 6}
+validates :password_confirmation, presence: true
 validates :email,   :presence => true,
                     :format => { :with => valid_email_regex },
                     :uniqueness => { :case_sensitive => false }

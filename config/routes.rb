@@ -13,6 +13,7 @@ Blueandgold::Application.routes.draw do
   match '/contact', to: 'static_pages#contact', via: :get
   match '/home',    to: 'static_pages#home', via: :get
   match '/',	    to: 'static_pages#home', via: :get 
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
