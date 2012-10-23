@@ -1,14 +1,18 @@
 Blueandgold::Application.routes.draw do
-  get "static_pages/home"
-	
-  get "static_pages/help"
-
   resources :apartments
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
+
+  root to: 'static_pages#home'
+
   match '/signup',  to: 'users#new', via: :get
   match '/signin',  to: 'sessions#new', via: :post
   match '/signout', to: 'sessions#destroy', via: :delete
+  match '/help',    to: 'static_pages#help', via: :get
+  match '/about',   to: 'static_pages#about', via: :get
+  match '/contact', to: 'static_pages#contact', via: :get
+  match '/home',    to: 'static_pages#home', via: :get
+  match '/',	    to: 'static_pages#home', via: :get 
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

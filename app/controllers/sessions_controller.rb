@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
         @title = "Sign in"
         render 'new'
 	end
-	redirect_to root_path
+	#redirect_to root_path
 end
   
 def destroy

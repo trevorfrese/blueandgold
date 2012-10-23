@@ -38,3 +38,4 @@ gem 'jquery-rails'
 # gem 'debugger'
 
 gem 'bcrypt-ruby'
+gem 'bootstrap-sass', '2.0.4'
