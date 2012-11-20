@@ -1,12 +1,12 @@
 Blueandgold::Application.routes.draw do
-  resources :apartments
+  resources :apartments, only: [:create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
 
   root to: 'static_pages#home'
 
   match '/signup',  to: 'users#new', via: :get
-  match '/signin',  to: 'sessions#new', via: :post
+  match '/signin',  to: 'sessions#new', via: :get
   match '/signout', to: 'sessions#destroy', via: :delete
   match '/help',    to: 'static_pages#help', via: :get
   match '/about',   to: 'static_pages#about', via: :get

@@ -1,6 +1,19 @@
+<% if signed_in? %>
+  <div class="row">
+    <aside class="span4">
+      <section>
+        <%= render 'shared/user_info' %>
+      </section>
+      <section>
+        <%= render 'shared/apartment_form' %>
+      </section>
+    </aside>
+  </div>  
+<% else %>
+  <div class="center hero-unit">
 <h1>BlueAndGold</h1>
 <p>This is the home page. This should have things on it like buttons and shit.</p>
 <p>There should be buttons for apartments, books, ridesharing, events, and map. </p>
 
-  <%= link_to "Sign up now!", '#', class: "btn btn-large btn-primary" %>
-
+  <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+<% end %>

@@ -1,0 +1,11 @@
+<li>
+  <span class="content"><%= apartment.content %></span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(apartment.created_at) %> ago.
+  </span>
+  <% if current_user?(apartment.user) %>
+    <%= link_to "delete", apartment, method: :delete,
+                                     data: { confirm: 'You sure?' },
+                                     title: apartment.content %>
+  <% end %>
+</li>
