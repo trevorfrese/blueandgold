@@ -16,6 +16,10 @@ validates :email,   :presence => true,
                     :uniqueness => { :case_sensitive => false }
 
 before_save :generate_auth_token
+def feed
+#    Apartment.where("user_id = ?", id)
+     Apartment
+end
 
 private
 

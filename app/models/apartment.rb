@@ -4,9 +4,17 @@ class Apartment < ActiveRecord::Base
   belongs_to :user
 
   validates :user_id, presence: true
-  validates :content, presence: true, length: { maximum: 140 }
+  validates :content, presence: true, length: { maximum: 600 }
+  #validates :address, presence: true, length: { maximum: 200 }
 
-  default_scope order: 'microposts.created_at DESC'
+  valid_address_regex = //
+  #if i can find an address regex that would be great, but its not uniform
+  validates :address, :presence => true,
+                    :format => { :with => valid_address_regex },
+                    :length => { :maximum => 200 }
+
+
+  default_scope order: 'apartments.created_at DESC'
 
 
 end

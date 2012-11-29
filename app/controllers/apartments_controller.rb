@@ -1,9 +1,9 @@
 class ApartmentsController < ApplicationController
-  before_filter :signed_in_user
+  before_filter :signed_in_user, only: [:create, :destroy]
   before_filter :correct_user, only: :destroy
 
   def create
-    @apartment = current_user.apartments.build(params[:micropost])
+    @apartment = current_user.apartments.build(params[:apartment])
     if @apartment.save
       flash[:success] = "Apartment created!"
       redirect_to root_url
@@ -18,6 +18,9 @@ class ApartmentsController < ApplicationController
     redirect_to root_url
   end
 
+  def apartments
+     render 'apartments/apartments'
+  end
   private
 
     def correct_user

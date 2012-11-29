@@ -8,11 +8,15 @@
         <%= render 'shared/apartment_form' %>
       </section>
     </aside>
+    <div class="span8">
+      <h3>Apartment Feed</h3>
+      <%= render 'shared/feed' %>
+    </div>
   </div>  
 <% else %>
   <div class="center hero-unit">
 <h1>BlueAndGold</h1>
-<p>This is the home page. This should have things on it like buttons and shit.</p>
+<p>This is the home page. This should have things on it like buttons.</p>
 <p>There should be buttons for apartments, books, ridesharing, events, and map. </p>
 
   <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
