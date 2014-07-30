@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+
+    </head>
+    <body>
+        <h1>Flask Google Maps Example</h1>
+
+        <h2> Template function with multiple markers </h2>
+        {% with map=googlemap_obj("another-map",34.410047, -119.861133,
+        markers=[(34.410047, -119.861133), ], zoom = 15) %}
+            {{map.html}}
+            {{map.js}}
+        {% endwith %}
+
+
+    </body>
+</html>

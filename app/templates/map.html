@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div id = "demo">
+{% set location=(34.410047, -119.861133) %}
+
+{% set style=
+	"width:auto;   
+	height:500;
+"%}
+
+{{
+	googlemap(
+    "ivmap",
+    location.0, location.1,
+    markers=[location,],
+    style=style, 
+    zoom=15,
+    )
+}}
+<div>
+<script>
+document.getElementById("demo").addEventListener("click", myFunction);
+
+function myFunction() {
+    document.getElementById("demo").innerHTML = "YOU CLICKED ME!";
+}
+</script>
+{% endblock %}
