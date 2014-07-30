@@ -1,9 +1,0 @@
-<%= form_for(@apartment) do |f| %>
-  <%= render 'shared/error_messages', object: f.object %>
-  <div class="field">
-    <%= f.text_field :address, placeholder: "Fill in the street address..."%>
-    <%= f.text_area :content, placeholder: "Write new apartment listing..." %>
-  </div>
-  <%= f.submit "Post", class: "btn btn-large btn-primary" %>
-<% end %>
-
