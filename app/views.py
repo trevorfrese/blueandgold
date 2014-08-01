@@ -1,68 +1,48 @@
-from flask import render_template, flash, redirect, url_for, session, request
-from app import app
+from flask import render_template, flash, redirect, url_for, session, request, g
+from flask.ext.login import login_user, logout_user, current_user, login_required
+from app import app, db, lm
 from forms import LoginForm
 from auths import facebook
-'''
-#Oauth stuff for Facebook login
-from flask_oauth import OAuth
-oauth = OAuth()
+from models import User, ROLE_USER, ROLE_ADMIN
 
-facebook = oauth.remote_app('facebook',
-    base_url='https://graph.facebook.com/',
-    request_token_url=None,
-    access_token_url='/oauth/access_token',
-    authorize_url='https://www.facebook.com/dialog/oauth',
-    consumer_key='728516440523822',
-    consumer_secret='755e333aa52e140fec75b70d01dc032f',
-    request_token_params={'scope': 'email'}
-)
-'''
+@lm.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+@app.before_request
+def before_request():
+    g.user = current_user
 
 @app.route('/')
 @app.route('/index')
 def index():
-    user = { 'nickname': 'Trevor' } # fake user
-    posts = [ # fake array of posts
-        { 
-            'author': { 'nickname': 'John' }, 
-            'body': 'Beautiful day in Portland!' 
-        },
-        { 
-            'author': { 'nickname': 'Susan' }, 
-            'body': 'The Avengers movie was so cool!' 
-        }
-    ]
     return render_template("index.html",
-        title = 'Home',
-        user = user,
-        posts = posts)
+        title = 'Home')
 
 @app.route('/map')
 def map():
      # creating a map in the view
     return render_template('map.html')
     #return render_template("map.html")
-'''
-@app.route('/login', methods = ['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        flash('Login requested for OpenID="' + form.openid.data + '", remember_me=' + str(form.remember_me.data))
-        return redirect('/index')
-    return render_template('login.html', 
-        title = 'Sign In',
-        form = form)
-'''
 
-#put this on a button
 @app.route('/login')
 def login():
+    if g.user is not None and g.user.is_authenticated():
+        return redirect(url_for('index'))
+    else:    
+        return render_template('login.html', 
+        title = 'Sign In')
+
+#put this on a button
+@app.route('/fblogin')
+def fblogin():
     return facebook.authorize(callback=url_for('facebook_authorized',
         next=request.args.get('next') or request.referrer or None,
         _external=True))
 
-#rename this as logged in page
-@app.route('/login/authorized')
+#this method is post authorization, takes all the data, creates a user
+#store in db only if user is not already in, 
+@app.route('/fblogin/authorized')
 @facebook.authorized_handler
 def facebook_authorized(resp):
     if resp is None:
@@ -70,13 +50,27 @@ def facebook_authorized(resp):
             request.args['error_reason'],
             request.args['error_description']
         )
+
     session['oauth_token'] = (resp['access_token'], '')
+
     me = facebook.get('/me')
-    name = me.data['name']
+
+    user = User.query.filter_by(fbid = me.data['id']).first()
+    if user is None:
+        user = User(name= me.data['name'], fbid = me.data['id'] ,firstname = me.data['first_name'],
+        lastname = me.data['last_name'],email= me.data['email'],role = 0)
+
+        db.session.add(user)
+        db.session.commit()
     
-    return 'Logged in as id=%s name=%s redirect=%s' % \
-        (me.data['id'], me.data['name'], request.args.get('next'))
+    login_user(user)
+    return render_template("loggedin.html", name = me.data['name'])
 
 @facebook.tokengetter
 def get_facebook_oauth_token():
     return session.get('oauth_token')
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))

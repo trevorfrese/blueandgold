@@ -7,7 +7,10 @@ pre_meta = MetaData()
 post_meta = MetaData()
 user = Table('user', post_meta,
     Column('id', Integer, primary_key=True, nullable=False),
-    Column('nickname', String(length=64)),
+    Column('name', String(length=64)),
+    Column('fbid', String(length=64)),
+    Column('firstname', String(length=32)),
+    Column('lastname', String(length=32)),
     Column('email', String(length=120)),
     Column('role', SmallInteger, default=ColumnDefault(0)),
 )
