@@ -1,6 +1,10 @@
-from flask import Flask
-from flask.ext.googlemaps import GoogleMaps
+from flask import Flask, redirect, url_for, session, request
+from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-GoogleMaps(app)
-from app import views
+app.config.from_object('config')
+
+db = SQLAlchemy(app)
+
+
+from app import views, models

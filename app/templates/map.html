@@ -123,11 +123,10 @@ function initialize() {
 
       markers.push(marker);
 
-      //bounds.extend(place.geometry.location);
+      map.setZoom(17);
       map.panTo(marker.position);
     }
     
-    //map.fitBounds(bounds);
   });
   // [END region_getplaces]
 
@@ -197,7 +196,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
       <input onclick="deleteMarkers();" type=button value="Delete Listings">
     </div>
     -->
-    <h1>Please enter your listing </h1>
+    <h1><center>Please enter your listing </center></h1>
     <input id="pac-input" class="controls" type="text" placeholder="What address would you like to list?">
     <div id="map-canvas"></div>
   </body>
