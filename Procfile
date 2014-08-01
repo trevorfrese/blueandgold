@@ -1,0 +1,1 @@
+web: gunicorn herokurun:app --log-file=-
