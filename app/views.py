@@ -1,9 +1,9 @@
 from flask import render_template, flash, redirect, url_for, session, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
-from forms import LoginForm
-from auths import facebook, twitter, google
+from auths import facebook, twitter
 from models import User, ROLE_USER, ROLE_ADMIN
+from forms import EditForm
 
 @lm.user_loader
 def load_user(id):
@@ -19,11 +19,24 @@ def index():
     return render_template("index.html",
         title = 'Home')
 
-@app.route('/map')
+@app.route('/map', methods = ['GET', 'POST'])
+@login_required
 def map():
      # creating a map in the view
-    return render_template('map.html')
-    #return render_template("map.html")
+    form = EditForm()
+    '''render_template('map.html',form = form)
+    if form.validate_on_submit():
+        #g.user.about_me = form.about_me.data
+        #db.session.add(g.user)
+        #db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('map'))
+    else:
+        #form.nickname.data = g.user.nickname
+        #form.about_me.data = g.user.about_me
+        flash('nothing happened')
+    '''
+    return render_template('map.html',form = form)
 
 @app.route('/login')
 def login():
@@ -93,35 +106,12 @@ def tweet_authorized(resp):
     flash('You were signed in')
     return redirect(next_url)
 
-@app.route('/glogin')
-def glogin():
-    callback=url_for('gauthorized', _external=True)
-    return google.authorize(callback=callback)
-
-@app.route('/gauthorized')
-@google.authorized_handler
-def gauthorized(resp):
-    access_token = resp['access_token']
-    session['access_token'] = access_token, ''
-
-    user = User.query.filter_by(auth_id=resp['sub'])
-
-    if user is None:
-        user = User(name= resp['name'], auth_id = resp['id'], 
-            email= resp['email'], role = 0)
-        db.session.add(user)
-        db_session.commit()
-
-    return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@google.tokengetter
-def get_access_token():
-    return session.get('access_token')
 
 @facebook.tokengetter
 def get_facebook_oauth_token():
