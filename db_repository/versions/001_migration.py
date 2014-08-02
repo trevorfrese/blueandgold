@@ -8,9 +8,7 @@ post_meta = MetaData()
 user = Table('user', post_meta,
     Column('id', Integer, primary_key=True, nullable=False),
     Column('name', String(length=64)),
-    Column('fbid', String(length=64)),
-    Column('firstname', String(length=32)),
-    Column('lastname', String(length=32)),
+    Column('auth_id', String(length=64)),
     Column('email', String(length=120)),
     Column('role', SmallInteger, default=ColumnDefault(0)),
 )

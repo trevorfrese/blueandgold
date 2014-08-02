@@ -6,9 +6,7 @@ ROLE_ADMIN = 1
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), unique = True)
-    fbid = db.Column(db.String(64), unique = True)
-    firstname = db.Column(db.String(32), unique = True)
-    lastname = db.Column(db.String(32), unique = True)
+    auth_id = db.Column(db.String(64), unique = True)
     email = db.Column(db.String(120), unique = True)
     role = db.Column(db.SmallInteger, default = ROLE_USER)
     markers = db.relationship('Marker', backref = 'author', lazy = 'dynamic')

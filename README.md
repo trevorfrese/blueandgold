@@ -13,12 +13,12 @@ X) Get user info from Facebook login
 X) Store all user info into database
 X) Check if user is already in db
 X) User login / logout
+X) Heroku operational
 
 Functionality to implement:
 1) Allow users to add information in seperate form that will be put into info marker
 2) Save markers, redeploy them
 3) Database to save markers
-
 
 
 
