@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, session, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
 from forms import LoginForm
-from auths import facebook, twitter
+from auths import facebook, twitter, google
 from models import User, ROLE_USER, ROLE_ADMIN
 
 @lm.user_loader
@@ -89,16 +89,39 @@ def tweet_authorized(resp):
         db_session.commit()
   
     
-
-    session['user_id'] = user.id
+    #session['user_id'] = user.id
     flash('You were signed in')
     return redirect(next_url)
 
+@app.route('/glogin')
+def glogin():
+    callback=url_for('gauthorized', _external=True)
+    return google.authorize(callback=callback)
+
+@app.route('/gauthorized')
+@google.authorized_handler
+def gauthorized(resp):
+    access_token = resp['access_token']
+    session['access_token'] = access_token, ''
+
+    user = User.query.filter_by(auth_id=resp['sub'])
+
+    if user is None:
+        user = User(name= resp['name'], auth_id = resp['id'], 
+            email= resp['email'], role = 0)
+        db.session.add(user)
+        db_session.commit()
+
+    return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@google.tokengetter
+def get_access_token():
+    return session.get('access_token')
 
 @facebook.tokengetter
 def get_facebook_oauth_token():

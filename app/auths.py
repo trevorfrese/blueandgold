@@ -2,7 +2,7 @@
 from flask_oauth import OAuth
 oauth = OAuth()
 GOOGLE_CLIENT_ID = '838957747084-cg799md78hdt3tn51rq5tnl8fl9bsme7.apps.googleusercontent.com'
-GOOGLE_CLIENT_SECRET = ''
+GOOGLE_CLIENT_SECRET = 'W6wLK0feGnzZwYbWa2aZkTmx'
 
 FACEBOOK_KEY = '577704639005531'
 FACEBOOK_SECRET = '9d844c13a7c906b8042df4df0028dc31'
@@ -16,7 +16,7 @@ facebook = oauth.remote_app('facebook',
     consumer_secret=FACEBOOK_SECRET,
     request_token_params={'scope': 'email'}
 )
-'''
+
 google = oauth.remote_app('google',
 	base_url='https://www.google.com/accounts/',
 	authorize_url='https://accounts.google.com/o/oauth2/auth',
@@ -27,7 +27,7 @@ google = oauth.remote_app('google',
 	access_token_params={'grant_type': 'authorization_code'},
 	consumer_key=GOOGLE_CLIENT_ID,
 	consumer_secret=GOOGLE_CLIENT_SECRET)
-'''
+
 
 # Use Twitter as example remote application
 twitter = oauth.remote_app('twitter',
