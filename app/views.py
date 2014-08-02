@@ -55,7 +55,7 @@ def facebook_authorized(resp):
 
     me = facebook.get('/me')
 
-    user = User.query.filter_by(fbid = me.data['id']).first()
+    user = User.query.filter_by(auth_id = me.data['id']).first()
     if user is None:
         user = User(name= me.data['name'], auth_id = me.data['id'], 
             email= me.data['email'], role = 0)
